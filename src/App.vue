@@ -1,39 +1,44 @@
 <template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>open_in_new</v-icon>
-      </v-btn>
-    </v-toolbar>
+  <div id="app">
+    <v-app>
+      <v-toolbar>
+        <v-toolbar-side-icon></v-toolbar-side-icon>
+        <v-toolbar-title>Title</v-toolbar-title>
+      </v-toolbar>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+      <v-content class="content">
+        <router-view :coordinates="coordinates"/>
+      </v-content>
+    </v-app>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      //
-    }
-  }
+<style scoped>
+.content {
+  margin-top: 15px;
 }
+</style>
+<script>
+export default {
+  name: "App",
+  data() {
+    return {
+      coordinates: undefined
+    };
+  },
+  methods: {},
+
+  mounted() {
+    navigator.geolocation.watchPosition(
+      position => {
+        this.coordinates = position.coords;
+        console.log(this.coordinates);
+      },
+      err => {
+        alert("Пожалуйста, включите геолокацию!");
+      },
+      { enableHighAccuracy: true, maximumAge: 0 }
+    );
+  }
+};
 </script>
